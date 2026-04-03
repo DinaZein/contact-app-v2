@@ -1,0 +1,66 @@
+<h2 mat-dialog-title>Edit Contact</h2>
+
+<form #editForm="ngForm">
+  <mat-dialog-content>
+
+    <!-- Name -->
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Name"
+        [(ngModel)]="data.name"
+        name="name"
+        required
+        #nameRef="ngModel"
+      >
+      <mat-error *ngIf="nameRef.invalid && nameRef.touched">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Email"
+        [(ngModel)]="data.email"
+        name="email"
+        required
+        email
+        #emailRef="ngModel"
+      >
+      <mat-error *ngIf="emailRef.invalid && emailRef.touched">
+        Please enter a valid email
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Phone -->
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Phone"
+        [(ngModel)]="data.phone"
+        name="phone"
+        required
+        pattern="^[0-9]{8,15}$"
+        #phoneRef="ngModel"
+      >
+      <mat-error *ngIf="phoneRef.invalid && phoneRef.touched">
+        Phone must be 8-15 digits
+      </mat-error>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Cancel</button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="save()"
+      [disabled]="editForm.invalid"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

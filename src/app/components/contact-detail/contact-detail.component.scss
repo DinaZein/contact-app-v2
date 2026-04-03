@@ -1,0 +1,20 @@
+.contact-card {
+  width: 100%;
+  border-radius: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.contact-header h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.contact-info {
+  margin-top: 8px;
+  color: #555;
+}

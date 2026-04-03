@@ -1,0 +1,96 @@
+<h2>Contact App</h2>
+
+<!-- Add Contact -->
+<form #contactForm="ngForm">
+  <!-- Name field -->
+  <mat-form-field>
+    <input matInput placeholder="Name" [(ngModel)]="newContact.name" name="name" required #nameRef="ngModel">
+    <mat-error *ngIf="nameRef.invalid && nameRef.touched">Name is required</mat-error>
+  </mat-form-field>
+
+<mat-form-field style="margin-left: 10px;">
+  <input 
+    matInput
+    placeholder="Email"
+    [(ngModel)]="newContact.email"
+    name="email"
+    required
+    email
+    #emailRef="ngModel"
+  >
+  <mat-error *ngIf="emailRef.invalid && emailRef.touched">
+    Please enter a valid email
+  </mat-error>
+</mat-form-field>
+
+<mat-form-field style="margin-left: 10px;">
+  <input
+    matInput
+    placeholder="Phone"
+    [(ngModel)]="newContact.phone"
+    name="phone"
+    required
+    pattern="^[0-9]{8,15}$"
+    #phoneRef="ngModel"
+  >
+  <mat-error *ngIf="phoneRef.invalid && phoneRef.touched">
+    Phone must be 8-15 digits
+  </mat-error>
+</mat-form-field>
+
+  <button
+    mat-raised-button style="margin-left: 10px;"
+    color="primary"
+    (click)="addContact()"
+    [disabled]="contactForm.invalid"
+  >
+    Add Contact
+  </button>
+</form>
+<!-- Search -->
+ <div>
+<mat-form-field>
+  <input matInput placeholder="Search by name" [(ngModel)]="searchTerm">
+</mat-form-field>
+</div>
+<!-- Table -->
+<!-- <table mat-table [dataSource]="contacts | contactFilter: searchTerm">
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let contact">{{contact.name}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let contact">{{contact.email}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef>Phone</th>
+    <td mat-cell *matCellDef="let contact">{{contact.phone}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let contact">
+        <button mat-button color="primary" (click)="editContact(contact)">
+  Edit
+</button>
+      <button mat-button color="warn" (click)="deleteContact(contact.id)">
+        Delete
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['name','email','phone','actions']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['name','email','phone','actions'];"></tr>
+</table> -->
+<div class="contact-list">
+  <app-contact-detail
+    *ngFor="let contact of contacts | contactFilter: searchTerm"
+    [contact]="contact"
+    (delete)="deleteContact($event)"
+    (edit)="editContact($event)">
+  </app-contact-detail>
+</div>
