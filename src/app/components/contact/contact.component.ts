@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ContactDetailComponent } from '../contact-detail/contact-detail.component';
 import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
-
+import { randFullName, randEmail, randPhoneNumber } from '@ngneat/falso';
 @Component({
     selector: 'app-contact',
     templateUrl: './contact.component.html',
@@ -34,7 +34,7 @@ export class ContactComponent implements OnInit {
   filteredContacts: Contact[] = [];
 
   newContact: Contact = {
-    id: 0,
+    id: "",
     name: '',
     email: '',
     phone: ''
@@ -50,17 +50,20 @@ export class ContactComponent implements OnInit {
   }
 
 loadContacts() {
-  this.contacts = [...this.contactService.getContacts()];
+  this.contactService.getContacts().subscribe(data => {
+  this.contacts = data;
+});
+console.log(this.contacts)
   this.filteredContacts = this.contacts;
 }
 
   addContact() {
     this.contactService.addContact(this.newContact);
-    this.newContact = { id: 0, name: '', email: '', phone: '' };
+    this.newContact = { id: "", name: '', email: '', phone: '' };
     this.loadContacts();
   }
 
-  deleteContact(id: number) {
+  deleteContact(id: string) {
     this.contactService.deleteContact(id);
     this.loadContacts();
   }
@@ -84,5 +87,14 @@ loadContacts() {
     }
   });
 }
+  generateRandom() {
+    const contact = {
+      name: randFullName(),
+      email: randEmail(),
+      phone: randPhoneNumber()
+    };
 
+    this.contactService.addContact(contact);
+    this.loadContacts(); // refresh the list after adding
+  }
 }

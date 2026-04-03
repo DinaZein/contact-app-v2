@@ -1,8 +1,11 @@
 import { Component, Inject, NgModule } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogActions, MatDialogContent } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogModule } from '@angular/material/dialog';
 import { Contact } from '../../models/contact';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -11,10 +14,13 @@ import { FormsModule } from '@angular/forms';
       styleUrl: './edit-contact-dialog.component.scss',
     standalone: true,
           imports: [
-MatFormFieldModule,
-MatDialogActions,
-    FormsModule,
-    MatDialogContent
+  FormsModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule,
+  MatDialogModule,
+  MatError,
+  CommonModule
   ],
 })
 export class EditContactDialogComponent {

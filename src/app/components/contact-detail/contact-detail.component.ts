@@ -15,7 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 export class ContactDetailComponent {
 
   @Input() contact!: Contact;
-  @Output() delete = new EventEmitter<number>();
+  @Output() delete = new EventEmitter<string>();
 @Output() edit = new EventEmitter<Contact>();
   onDelete() {
     this.delete.emit(this.contact.id);

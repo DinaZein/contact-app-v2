@@ -42,12 +42,9 @@
         [(ngModel)]="data.phone"
         name="phone"
         required
-        pattern="^[0-9]{8,15}$"
         #phoneRef="ngModel"
       >
-      <mat-error *ngIf="phoneRef.invalid && phoneRef.touched">
-        Phone must be 8-15 digits
-      </mat-error>
+ 
     </mat-form-field>
 
   </mat-dialog-content>
