@@ -95,6 +95,6 @@ console.log(this.contacts)
     };
 
     this.contactService.addContact(contact);
-    this.loadContacts(); // refresh the list after adding
+    this.loadContacts(); 
   }
 }
