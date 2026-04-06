@@ -21,7 +21,7 @@ export class AuthService {
 async register(email: string, password: string, name: string) {
   const result = await createUserWithEmailAndPassword(this.auth, email, password);
 
-  // ✅ Set displayName
+  
   await updateProfile(result.user, {
     displayName: name
   });
@@ -33,7 +33,4 @@ async register(email: string, password: string, name: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  logout() {
-    return signOut(this.auth);
-  }
-}
+}3
