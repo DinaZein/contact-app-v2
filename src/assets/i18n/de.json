@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "Kontakt App"
+  },
+  "login": {
+    "title": "Anmelden",
+    "button": "Anmelden",
+    "noAccount": "Hast du noch kein Konto?",
+    "registerLink": "Registriere dich hier"
+  },
+  "register": {
+    "title": "Registrieren",
+    "name":"Name",
+    "button":"Registrieren"
+  },
+  "contact":{
+"phone":"Telefon",
+"addContact":"Kontakt hinzufügen",
+"generateRandomContact":"Generieren Sie zufälligen Kontakt",
+"searchByName":"Suche nach Namen"
+  },
+      "email": "Email",
+    "password": "Passwort",
+    "edit":"bearbeiten",
+    "delete":"löschen",
+    "emailError":"Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "nameError":"Name ist erforderlich",
+    "phoneError":"Die Telefonnummer muss 8-15-stellig sein.",
+    "saveButton":"speichern",
+    "cancelButton":"stornieren"
+  
+}

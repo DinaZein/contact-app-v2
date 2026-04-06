@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { TranslocoModule } from '@ngneat/transloco';
 
 
 @Component({
@@ -20,7 +21,8 @@ import { CommonModule } from '@angular/common';
   MatButtonModule,
   MatDialogModule,
   MatError,
-  CommonModule
+  CommonModule,
+  TranslocoModule
   ],
 })
 export class EditContactDialogComponent {

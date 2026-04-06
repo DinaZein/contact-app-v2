@@ -1,11 +1,15 @@
-<h2>Contact App</h2>
 
+<div *ngIf="auth.user$ | async as user">
+  <p><strong>ID:</strong> {{ user.uid }}</p>
+  <p><strong>Name:</strong> {{ user.displayName || 'No name' }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+</div>
 <!-- Add Contact -->
 <form #contactForm="ngForm">
   <!-- Name field -->
   <mat-form-field>
     <input matInput placeholder="Name" [(ngModel)]="newContact.name" name="name" required #nameRef="ngModel">
-    <mat-error *ngIf="nameRef.invalid && nameRef.touched">Name is required</mat-error>
+    <mat-error *ngIf="nameRef.invalid && nameRef.touched">    {{ 'nameError' | transloco }}</mat-error>
   </mat-form-field>
 
 <mat-form-field style="margin-left: 10px;">
@@ -19,14 +23,14 @@
     #emailRef="ngModel"
   >
   <mat-error *ngIf="emailRef.invalid && emailRef.touched">
-    Please enter a valid email
+    {{ 'emailError' | transloco }}
   </mat-error>
 </mat-form-field>
 
 <mat-form-field style="margin-left: 10px;">
   <input
     matInput
-    placeholder="Phone"
+    placeholder="{{ 'contact.phone' | transloco }}"
     [(ngModel)]="newContact.phone"
     name="phone"
     required
@@ -34,7 +38,7 @@
     #phoneRef="ngModel"
   >
   <mat-error *ngIf="phoneRef.invalid && phoneRef.touched">
-    Phone must be 8-15 digits
+     {{ 'phoneError' | transloco }}
   </mat-error>
 </mat-form-field>
 
@@ -44,16 +48,16 @@
     (click)="addContact()"
     [disabled]="contactForm.invalid"
   >
-    Add Contact
+    {{ 'contact.addContact' | transloco }}
   </button>
   <button mat-raised-button color="primary" (click)="generateRandom()">
-  Generate Random Contact
+    {{ 'contact.generateRandomContact' | transloco }}
 </button>
 </form>
 <!-- Search -->
  <div>
 <mat-form-field>
-  <input matInput placeholder="Search by name" [(ngModel)]="searchTerm">
+  <input matInput placeholder="{{ 'contact.searchByName' | transloco }}" [(ngModel)]="searchTerm">
 </mat-form-field>
 </div>
 <!-- Table -->
@@ -89,6 +93,7 @@
   <tr mat-header-row *matHeaderRowDef="['name','email','phone','actions']"></tr>
   <tr mat-row *matRowDef="let row; columns: ['name','email','phone','actions'];"></tr>
 </table> -->
+
 <div class="contact-list">
   <app-contact-detail
     *ngFor="let contact of contacts | contactFilter: searchTerm"

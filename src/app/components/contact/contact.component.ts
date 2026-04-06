@@ -12,6 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ContactDetailComponent } from '../contact-detail/contact-detail.component';
 import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
 import { randFullName, randEmail, randPhoneNumber } from '@ngneat/falso';
+import { AuthService } from '../../services/auth.service';
+import { TranslocoModule } from '@ngneat/transloco';
 @Component({
     selector: 'app-contact',
     templateUrl: './contact.component.html',
@@ -25,7 +27,8 @@ import { randFullName, randEmail, randPhoneNumber } from '@ngneat/falso';
     MatFormFieldModule,
     MatButtonModule,
     ContactDetailComponent,
-    ContactFilterPipe
+    ContactFilterPipe,
+    TranslocoModule
   ],
 })
 export class ContactComponent implements OnInit {
@@ -43,7 +46,7 @@ export class ContactComponent implements OnInit {
   searchTerm: string = '';
 
   constructor(  private contactService: ContactService,
-  private dialog: MatDialog) {}
+  private dialog: MatDialog,public auth: AuthService) {}
 
   ngOnInit() {
     this.loadContacts();

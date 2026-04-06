@@ -1,0 +1,21 @@
+<h2>{{ 'login.title' | transloco }}</h2>
+
+<input
+  [(ngModel)]="email"
+  [placeholder]="'email' | transloco"
+/>
+
+<input
+  [(ngModel)]="password"
+  type="password"
+  [placeholder]="'password' | transloco"
+/>
+
+<button (click)="login()">
+  {{ 'login.button' | transloco }}
+</button>
+
+<p>
+  {{ 'login.noAccount' | transloco }}
+  <a routerLink="/register">{{ 'login.registerLink' | transloco }}</a>
+</p>

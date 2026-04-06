@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "Contact App"
+  },
+   "login": {
+    "title":"Login",
+    "password": "Password",
+    "button": "Login",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register here"
+  },
+  "register": {
+    "title": "Register",
+    "name":"Name",
+    "button":"Register"
+  },
+    "contact":{
+"phone":"Phone",
+"addContact":"Add Contact",
+"generateRandomContact":"Generate Random Contact",
+"searchByName":"Search By Name"
+  },
+       "password": "Password",
+    "email": "Email",
+    "edit":"edit",
+    "delete":"delete",
+      "emailError":"Please enter a valid email",
+    "nameError":"Name is required",
+    "phoneError":"Phone must be 8-15 digits",
+        "saveButton":"Save",
+    "cancelButton":"Cancel"
+}

@@ -1,14 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ContactComponent } from "./components/contact/contact.component";
+import { AuthService } from './services/auth.service';
+import { CommonModule } from '@angular/common';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ContactComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  imports: [RouterOutlet, CommonModule,TranslocoModule],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
-  title = 'contact-app-v2';
+  constructor(public auth: AuthService,private transloco: TranslocoService) {}
+    setLang(lang: string) {
+    this.transloco.setActiveLang(lang);
+  }
 }

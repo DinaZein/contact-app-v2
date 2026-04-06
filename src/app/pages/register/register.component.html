@@ -1,0 +1,6 @@
+<h2>{{ 'register.title' | transloco }}</h2>
+    <input [(ngModel)]="email" placeholder="{{ 'email' | transloco }}" >
+    <input [(ngModel)]="password" type="password" placeholder="{{ 'password' | transloco }}" >
+        <input [(ngModel)]="name" type="text" placeholder="{{ 'register.name' | transloco }}" >
+
+    <button (click)="register()">{{ 'register.button' | transloco }}</button>

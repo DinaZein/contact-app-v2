@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Contact } from '../../models/contact';
 import { MatCardModule } from '@angular/material/card';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
     selector: 'app-contact-detail',
@@ -8,8 +9,8 @@ import { MatCardModule } from '@angular/material/card';
       styleUrl: './contact-detail.component.scss',
     standalone: true,
           imports: [
-      MatCardModule
-      
+      MatCardModule,
+      TranslocoModule
       ],
 })
 export class ContactDetailComponent {
