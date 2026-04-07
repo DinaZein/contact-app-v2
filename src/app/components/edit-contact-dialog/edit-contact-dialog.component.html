@@ -46,7 +46,17 @@
       >
  
     </mat-form-field>
-
+    <!-- Phone -->
+    <mat-form-field>
+   <input style="margin-left: 10px;"
+  #addressInput
+  matInput
+  placeholder="Address"
+  [(ngModel)]="data.address"
+  name="address"
+/>
+ 
+    </mat-form-field>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

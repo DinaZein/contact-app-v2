@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EditContactDialogComponent } from '../edit-contact-dialog/edit-contact-dialog.component';
 import { Contact } from '../../models/contact';
 import { ContactService } from '../../services/contact.service';
@@ -14,6 +14,7 @@ import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
 import { randFullName, randEmail, randPhoneNumber } from '@ngneat/falso';
 import { AuthService } from '../../services/auth.service';
 import { TranslocoModule } from '@ngneat/transloco';
+declare var google: any;
 @Component({
     selector: 'app-contact',
     templateUrl: './contact.component.html',
@@ -30,9 +31,10 @@ import { TranslocoModule } from '@ngneat/transloco';
     ContactFilterPipe,
     TranslocoModule
   ],
+  
 })
-export class ContactComponent implements OnInit {
-
+export class ContactComponent implements OnInit, AfterViewInit {
+@ViewChild('addressInput') addressInput!: ElementRef;
   contacts: Contact[] = [];
   filteredContacts: Contact[] = [];
 
@@ -40,7 +42,8 @@ export class ContactComponent implements OnInit {
     id: "",
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    address:''
   };
 
   searchTerm: string = '';
@@ -62,7 +65,7 @@ console.log(this.contacts)
 
   addContact() {
     this.contactService.addContact(this.newContact);
-    this.newContact = { id: "", name: '', email: '', phone: '' };
+    this.newContact = { id: "", name: '', email: '', phone: '' ,address:''};
     this.loadContacts();
   }
 
@@ -94,10 +97,21 @@ console.log(this.contacts)
     const contact = {
       name: randFullName(),
       email: randEmail(),
-      phone: randPhoneNumber()
+      phone: randPhoneNumber(),
+      address: 'Beirut, Lebanon'
     };
 
     this.contactService.addContact(contact);
     this.loadContacts(); 
   }
+  ngAfterViewInit() {
+  const autocomplete = new google.maps.places.Autocomplete(
+    this.addressInput.nativeElement
+  );
+
+  autocomplete.addListener('place_changed', () => {
+    const place = autocomplete.getPlace();
+    this.newContact.address = place.formatted_address;
+  });
+}
 }
