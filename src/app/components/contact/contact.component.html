@@ -67,6 +67,9 @@
 <mat-form-field>
   <input matInput placeholder="{{ 'contact.searchByName' | transloco }}" [(ngModel)]="searchTerm">
 </mat-form-field>
+<button mat-raised-button color="primary" (click)="exportToPDF()">
+  Export PDF
+</button>
 </div>
 <!-- Table -->
 <!-- <table mat-table [dataSource]="contacts | contactFilter: searchTerm">

@@ -14,6 +14,9 @@ import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
 import { randFullName, randEmail, randPhoneNumber } from '@ngneat/falso';
 import { AuthService } from '../../services/auth.service';
 import { TranslocoModule } from '@ngneat/transloco';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
 declare var google: any;
 @Component({
     selector: 'app-contact',
@@ -33,6 +36,7 @@ declare var google: any;
   ],
   
 })
+
 export class ContactComponent implements OnInit, AfterViewInit {
 @ViewChild('addressInput') addressInput!: ElementRef;
   contacts: Contact[] = [];
@@ -114,4 +118,19 @@ console.log(this.contacts)
     this.newContact.address = place.formatted_address;
   });
 }
+  exportToPDF() {
+    const docDefinition = {
+      content: [
+        { text: 'Contact List', style: 'header' },
+        ...this.contacts.map(c => ({
+          text: `${c.name} - ${c.email} - ${c.phone} - ${c.address}`,
+           margin: [0, 0, 0, 5]
+        }))
+      ]
+    };
+
+    (pdfMake as any).vfs = (pdfFonts as any).vfs;
+
+    (pdfMake as any).createPdf(docDefinition).download('contacts.pdf');
+  }
 }
