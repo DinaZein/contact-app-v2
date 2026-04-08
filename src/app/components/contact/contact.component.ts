@@ -16,8 +16,13 @@ import { AuthService } from '../../services/auth.service';
 import { TranslocoModule } from '@ngneat/transloco';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-
+import { liteClient as algoliasearch } from 'algoliasearch/lite';
 declare var google: any;
+
+const client = algoliasearch('UUU2L6S742', '042af01efbd748bfb53aa0a18341ef5d');
+
+
+
 @Component({
     selector: 'app-contact',
     templateUrl: './contact.component.html',
@@ -42,6 +47,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
   contacts: Contact[] = [];
   filteredContacts: Contact[] = [];
 
+searchResults: any[] = [];
   newContact: Contact = {
     id: "",
     name: '',
@@ -133,4 +139,17 @@ console.log(this.contacts)
 
     (pdfMake as any).createPdf(docDefinition).download('contacts.pdf');
   }
+search() {
+  client.search({
+    requests: [
+      {
+        indexName: 'contacts',
+        params: `query=${this.searchTerm}`
+      }
+    ]
+  }).then((res: any) => {
+    this.searchResults = res.results[0].hits;
+  });
+}
+
 }
