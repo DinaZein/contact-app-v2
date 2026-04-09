@@ -16,11 +16,12 @@ import { AuthService } from '../../services/auth.service';
 import { TranslocoModule } from '@ngneat/transloco';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { liteClient as algoliasearch } from 'algoliasearch/lite';
+import algoliasearch from 'algoliasearch'; 
+
 declare var google: any;
 
 const client = algoliasearch('UUU2L6S742', '042af01efbd748bfb53aa0a18341ef5d');
-
+const index = client.initIndex('contacts');
 
 
 @Component({
@@ -68,6 +69,9 @@ searchResults: any[] = [];
 loadContacts() {
   this.contactService.getContacts().subscribe(data => {
   this.contacts = data;
+   
+        this.pushToAlgolia(this.contacts);
+   
 });
 console.log(this.contacts)
   this.filteredContacts = this.contacts;
@@ -139,17 +143,47 @@ console.log(this.contacts)
 
     (pdfMake as any).createPdf(docDefinition).download('contacts.pdf');
   }
-search() {
-  client.search({
-    requests: [
-      {
-        indexName: 'contacts',
-        params: `query=${this.searchTerm}`
-      }
-    ]
-  }).then((res: any) => {
-    this.searchResults = res.results[0].hits;
+// search() {
+//   const index = client.initIndex('contacts');
+
+//   index.search(this.searchTerm).then((res: any) => {
+//     this.searchResults = res.hits;
+//   });
+// }
+pushToAlgolia(contacts: Contact[]) {
+  index.saveObjects(
+    contacts.map(c => ({
+      objectID: c.id,
+      ...c
+    }))
+  );
+}
+searchAlgolia(query: string) {
+  index.search<Contact>(query).then(response => {
+   
+    this.searchResults = response.hits.map(hit => ({
+      id: hit.objectID, 
+      name: hit.name,
+      email: hit.email,
+      phone: hit.phone,
+      address: (hit as any).address || ''
+    }));
   });
 }
+
+  onSearch(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.searchTerm = inputElement.value;
+
+    if (!this.searchTerm.trim()) {
+      this.filteredContacts = this.contacts;
+      this.searchResults = [];
+    } else {
+     
+      this.searchAlgolia(this.searchTerm);
+    
+    }
+  }
+
 
 }

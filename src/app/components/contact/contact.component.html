@@ -64,9 +64,13 @@
 </form>
 <!-- Search -->
  <div>
-<mat-form-field>
+<!-- <mat-form-field>
   <input matInput placeholder="{{ 'contact.searchByName' | transloco }}" [(ngModel)]="searchTerm">
-</mat-form-field>
+</mat-form-field> -->
+    <mat-form-field appearance="outline">
+      <mat-label>Search Contacts</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (input)="onSearch($event)" />
+    </mat-form-field>
 <button mat-raised-button color="primary" (click)="exportToPDF()">
   Export PDF
 </button>
@@ -111,16 +115,16 @@
   [(ngModel)]="searchQuery"
   (input)="search()"
 /> -->
-<input
+<!-- <input
   matInput
   placeholder="Search..."
   [(ngModel)]="searchTerm"
   (input)="search()"
-/>
+/> -->
 
-<div *ngFor="let result of searchResults">
+<!-- <div *ngFor="let result of searchResults">
   <div [innerHTML]="result._highlightResult.name.value"></div>
-</div>
+</div> -->
 <div class="contact-list">
   <app-contact-detail
     *ngFor="let contact of contacts | contactFilter: searchTerm"
