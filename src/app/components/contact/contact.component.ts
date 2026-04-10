@@ -61,32 +61,61 @@ searchResults: any[] = [];
   constructor(  private contactService: ContactService,
   private dialog: MatDialog,public auth: AuthService) {}
 
+
   ngOnInit() {
     this.loadContacts();
     this.printHello();
   }
 
 loadContacts() {
-  this.contactService.getContacts().subscribe(data => {
-  this.contacts = data;
- this.filteredContacts = this.contacts;
-   
-});
-console.log(this.contacts)
- 
+  // Au lieu de l'observable Firestore direct, on utilise l'API REST
+  this.contactService.getContactsFromRest().subscribe({
+    next: (data) => {
+      this.contacts = data;
+      this.filteredContacts = data;
+      console.log(this.contacts)
+    },
+    error: (err) => console.error('Erreur API REST:', err)
+  });
 }
+  // addContact() {
+  //   this.contactService.addContact(this.newContact);
+  //   this.newContact = { id: "", name: '', email: '', phone: '' ,address:''};
+  //   this.loadContacts();
+  // }
+addContact() {
+  // On appelle la fonction via le service (qui appelle la Cloud Function)
+  this.contactService.createContactWithCallable(this.newContact)
+    .then(() => {
+      console.log('Contact créé via la Cloud Function !');
+      this.newContact = { id: "", name: '', email: '', phone: '', address: '' };
+      this.loadContacts(); // Recharge la liste
+    })
+    .catch(err => console.error(err));
+}
+  // deleteContact(id: string) {
+  //   this.contactService.deleteContact(id);
+  //   this.loadContacts();
+  // }
+deleteContact(contact: any) {
+  console.log("Contact",contact)
+  // On cherche l'ID soit dans 'id', soit dans 'objectID' (pour Algolia)
+  const contactId = contact.id || contact.objectID;
 
-  addContact() {
-    this.contactService.addContact(this.newContact);
-    this.newContact = { id: "", name: '', email: '', phone: '' ,address:''};
-    this.loadContacts();
+  console.log("ID détecté :", contactId);
+
+  if (!contactId) {
+    alert("Impossible de supprimer : ce contact n'a pas d'identifiant.");
+    return;
   }
 
-  deleteContact(id: string) {
-    this.contactService.deleteContact(id);
-    this.loadContacts();
+  if (confirm('Supprimer ce contact ?')) {
+    this.contactService.deleteContactRest(contactId).subscribe({
+      next: () => this.loadContacts(),
+      error: (err) => console.error(err)
+    });
   }
-
+}
 search() {
   if (!this.searchTerm.trim()) {
     this.filteredContacts = this.contacts; // Retourne à la liste complète si vide
@@ -102,15 +131,27 @@ search() {
       console.error('Erreur Algolia:', err);
     });
 }
-  editContact(contact: Contact) {
+
+
+editContact(contact: Contact) {
   const dialogRef = this.dialog.open(EditContactDialogComponent, {
     width: '400px',
-    data: { ...contact }
+    data: { ...contact } // On passe une copie du contact
   });
-  dialogRef.afterClosed().subscribe((result: any) => {
+
+  dialogRef.afterClosed().subscribe((result: Contact) => {
     if (result) {
-      this.contactService.updateContact(result);
-      this.loadContacts();
+      // On appelle l'API REST pour mettre à jour
+      this.contactService.updateContactRest(result).subscribe({
+        next: () => {
+          console.log('Contact mis à jour via l\'API REST');
+          this.loadContacts(); // Rafraîchir la liste
+        },
+        error: (err) => {
+          console.error('Erreur lors de la mise à jour :', err);
+          alert('Erreur lors de la mise à jour.');
+        }
+      });
     }
   });
 }

@@ -16,10 +16,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 export class ContactDetailComponent {
 
   @Input() contact!: Contact;
-  @Output() delete = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<Contact>();
 @Output() edit = new EventEmitter<Contact>();
   onDelete() {
-    this.delete.emit(this.contact.id);
+    this.delete.emit(this.contact);
   }
   onEdit() {
   this.edit.emit(this.contact);

@@ -53,13 +53,15 @@ import { Observable } from 'rxjs';
 import { Contact } from '../models/contact';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { algoliasearch } from 'algoliasearch';
+import { HttpClient } from '@angular/common/http';
+import { getFunctions } from 'firebase/functions';
 @Injectable({ providedIn: 'root' })
 
 export class ContactService {
 
   private contactsRef;
 
-  constructor(private firestore: Firestore,private functions: Functions) {
+  constructor(private firestore: Firestore,private functions: Functions,private http: HttpClient) {
     this.contactsRef = collection(this.firestore, 'contacts');
   }
 
@@ -97,4 +99,35 @@ searchContacts(query: string): Promise<any> {
     ],
   });
 }
+private apiUrl = 'https://us-central1-contact-app-436fe.cloudfunctions.net/api/contacts';
+
+  // Utilisation de l'API REST au lieu de Firestore directement
+  getContactsRest() {
+    return this.http.get<Contact[]>(this.apiUrl);
+  }
+
+getContactsFromRest() {
+  return this.http.get<Contact[]>(this.apiUrl);
+}
+
+// Appel de la fonction Callable (POST serveur)
+async createContactWithCallable(contact: Contact) {
+  const functions = getFunctions();
+  const createContact = httpsCallable(functions, 'createContactCallable');
+  return createContact(contact);
+}
+
+// Optionnel: Appeler l'API REST pour supprimer (DELETE)
+deleteContactRest(id: string) {
+  return this.http.delete(`${this.apiUrl}/${id}`);
+}
+// contact.service.ts
+
+updateContactRest(contact: Contact) {
+  // On envoie les données vers : https://.../api/contacts/ID_DU_CONTACT
+  // contact.id (ou contact.objectID) contient l'identifiant
+  const id = contact.id || (contact as any).objectID;
+  return this.http.put(`${this.apiUrl}/${id}`, contact);
+}
+
 }
