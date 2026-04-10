@@ -64,70 +64,21 @@
 </form>
 <!-- Search -->
  <div>
-<!-- <mat-form-field>
-  <input matInput placeholder="{{ 'contact.searchByName' | transloco }}" [(ngModel)]="searchTerm">
-</mat-form-field> -->
-    <mat-form-field appearance="outline">
-      <mat-label>Search Contacts</mat-label>
-      <input matInput [(ngModel)]="searchTerm" (input)="onSearch($event)" />
-    </mat-form-field>
+    <mat-form-field>
+  <mat-label>Search a contact</mat-label>
+  <input matInput 
+         [(ngModel)]="searchTerm" 
+         (input)="search()" 
+         placeholder="Ex. Jean Dupont">
+</mat-form-field>
 <button mat-raised-button color="primary" (click)="exportToPDF()">
   Export PDF
 </button>
 
 </div>
-<!-- Table -->
-<!-- <table mat-table [dataSource]="contacts | contactFilter: searchTerm">
-
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let contact">{{contact.name}}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef>Email</th>
-    <td mat-cell *matCellDef="let contact">{{contact.email}}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="phone">
-    <th mat-header-cell *matHeaderCellDef>Phone</th>
-    <td mat-cell *matCellDef="let contact">{{contact.phone}}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Actions</th>
-    <td mat-cell *matCellDef="let contact">
-        <button mat-button color="primary" (click)="editContact(contact)">
-  Edit
-</button>
-      <button mat-button color="warn" (click)="deleteContact(contact.id)">
-        Delete
-      </button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="['name','email','phone','actions']"></tr>
-  <tr mat-row *matRowDef="let row; columns: ['name','email','phone','actions'];"></tr>
-</table> -->
-<!-- <input
-  matInput
-  placeholder="Search..."
-  [(ngModel)]="searchQuery"
-  (input)="search()"
-/> -->
-<!-- <input
-  matInput
-  placeholder="Search..."
-  [(ngModel)]="searchTerm"
-  (input)="search()"
-/> -->
-
-<!-- <div *ngFor="let result of searchResults">
-  <div [innerHTML]="result._highlightResult.name.value"></div>
-</div> -->
 <div class="contact-list">
   <app-contact-detail
-    *ngFor="let contact of contacts | contactFilter: searchTerm"
+    *ngFor="let contact of filteredContacts"
     [contact]="contact"
     (delete)="deleteContact($event)"
     (edit)="editContact($event)">

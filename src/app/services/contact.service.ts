@@ -51,13 +51,15 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Contact } from '../models/contact';
-
+import { Functions, httpsCallable } from '@angular/fire/functions';
+import { algoliasearch } from 'algoliasearch';
 @Injectable({ providedIn: 'root' })
+
 export class ContactService {
 
   private contactsRef;
 
-  constructor(private firestore: Firestore) {
+  constructor(private firestore: Firestore,private functions: Functions) {
     this.contactsRef = collection(this.firestore, 'contacts');
   }
 
@@ -78,4 +80,21 @@ export class ContactService {
     const docRef = doc(this.firestore, `contacts/${id}`);
     return deleteDoc(docRef);
   }
+    callHelloWorld() {
+    const hello = httpsCallable(this.functions, 'helloWorld');
+    return hello({});
+  }
+
+
+searchContacts(query: string): Promise<any> {
+    const client = algoliasearch('UUU2L6S742', '042af01efbd748bfb53aa0a18341ef5d');
+  return client.search({
+    requests: [
+      {
+        indexName: 'contacts',
+        query: query,
+      },
+    ],
+  });
+}
 }
